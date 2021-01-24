@@ -1,0 +1,5 @@
+outputs/*
+outputs_pick/*
+photos/*
+*__pycache__*
+BUGS.md
