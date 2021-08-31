@@ -1,5 +1,5 @@
-outputs/*
-outputs_pick/*
-photos/*
-*__pycache__*
-BUGS.md
+__pycache__/
+TreePhotos/
+Output/
+venv/
+tmp/

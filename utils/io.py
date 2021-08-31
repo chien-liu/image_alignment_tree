@@ -1,21 +1,29 @@
 import os
 import re
 import cv2
+from typing import List, NewType
+import numpy as np
+
+Image = NewType("Image", np.ndarray)
 
 
-def load_path(img_dir: list, MAX: int=None) -> list:
+def load_path(img_dir: str) -> List[str]:
     img_path = []
     for root, dirs, files in os.walk(img_dir, topdown=True):
         for name in files:
-            if name[-4:] == ".JPG":
+            if name[-4:] == ".JPG" or name[-4:] == ".jpg":
                 img_path.append(os.path.join(root, name))
     img_path.sort(key=lambda path: re.search(r'\d+', path).group(0))
-    if MAX:
-        MAX = min(MAX, len(img_path))
-    return img_path[:MAX] if MAX else img_path
+    return img_path
 
+def load_photo(path: str) -> Image:
+    img = cv2.imread(path)
+    h, w = img.shape[0], img.shape[1]
+    h, w = h//3, w//3
+    img = cv2.resize(img, (w, h))
+    return img
 
-def load_photos(img_path: list) -> list:
+def load_photos(img_path: List) -> List:
     print("Start loading images to memory")
     L = len(img_path)
 
@@ -32,7 +40,7 @@ def load_photos(img_path: list) -> list:
     return images
 
 
-def view_photos(images: list, t=1, save=False):
+def view_photos(images: List, t=1, save=False):
     n = len(str(len(images)))
     for i, img in enumerate(images):
         if save:
